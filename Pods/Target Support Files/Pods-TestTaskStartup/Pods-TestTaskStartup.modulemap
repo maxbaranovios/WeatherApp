@@ -1,0 +1,6 @@
+framework module Pods_TestTaskStartup {
+  umbrella header "Pods-TestTaskStartup-umbrella.h"
+
+  export *
+  module * { export * }
+}
