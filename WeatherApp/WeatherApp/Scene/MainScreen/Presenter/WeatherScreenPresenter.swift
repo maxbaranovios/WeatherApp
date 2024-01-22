@@ -4,6 +4,8 @@
 //
 //  Created by Maxim Baranov on 22/01/2024.
 //
+// https://api.weather.gov/alerts/active?status=actual&message_type=alert
+// https://picsum.photos/1000
 
 import UIKit
 

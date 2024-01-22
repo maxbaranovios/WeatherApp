@@ -20,6 +20,8 @@ final class WeatherViewController: UIViewController {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
+//        tableView.estimatedRowHeight = 80
+//        tableView.rowHeight = UITableView.automaticDimension
         tableView.allowsMultipleSelection = false
         tableView.register(WeatherTableViewCell.self)
         return tableView
@@ -27,13 +29,14 @@ final class WeatherViewController: UIViewController {
 
     // MARK: - Properties
 
-    var presenter = WeatherScreenPresenter()
+//    var presenter = WeatherScreenPresenter()
 //    private var cells: [AnyCellViewModel] = [WeatherCellViewModel()]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         view.backgroundColor = .red
+        print("Hello")
 
     }
 }
