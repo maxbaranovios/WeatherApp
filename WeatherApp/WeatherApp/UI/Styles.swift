@@ -25,4 +25,9 @@ public enum Style {
         /// 12
         static var xOffset: CGFloat { 12 }
     }
+    
+    enum Space {
+        ///  8
+        static var sSpace: CGFloat { 8 }
+    }
 }

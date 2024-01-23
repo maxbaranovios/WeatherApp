@@ -29,14 +29,13 @@ final class WeatherScreenPresenter: WeatherScreenPresenterProtocol {
     
     // MARK: - Helpers func
     
-    private func fetchData() { // 1 воткнуть guard и выдавать ошибку
-        // network layer base api, ч-з URLComponents ->
+    private func fetchData() {
         guard let url = URL(string: "https://api.weather.gov/alerts/active?status=actual&message_type=alert") else {
             print("Error, incorrect URL")
             return
         }
-
-        entity.weatherService.fetchData(url: url) { [weak self] (result: Result<WeatherInfo, Error>) in
+        
+        entity.weatherService.fetchData(url: url) { [weak self] (result: Result<WeatherInfo, NetworkError>) in
             switch result {
             case .success(let data):
                 self?.handleResponse(data.features)
@@ -48,8 +47,8 @@ final class WeatherScreenPresenter: WeatherScreenPresenterProtocol {
     
     private func handleResponse(_ response: [Feature]) {
         var cellViewModels: [WeatherCellViewModel] = []
-        
-        response.forEach { feature in // отдельный файл end points (со смысловым названием) прописываешь end point / status / message type 
+
+        response.forEach { feature in
             let url = URL(string: "https://picsum.photos/1000")
             entity.weatherService.fetchImage(url: url!) { [weak self] image in
                 cellViewModels.append(WeatherCellViewModel(image: image,
@@ -58,7 +57,6 @@ final class WeatherScreenPresenter: WeatherScreenPresenterProtocol {
                                                       endDate: self?.formatDate(date: feature.properties.ends) ?? "Error",
                                                       senderName: feature.properties.senderName)
                 )
-                
                 DispatchQueue.main.async {
                     self?.view?.setupCells(with: WeatherScreenViewModel(weatherCellViewModels: cellViewModels))
                 }
@@ -73,7 +71,6 @@ final class WeatherScreenPresenter: WeatherScreenPresenterProtocol {
         
         dateFormatter.dateFormat = "dd.MM.yyyy"
         let dateString = dateFormatter.string(from: validDate)
-        print(dateString)
         return dateString
     }
 }

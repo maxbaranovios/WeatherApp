@@ -7,18 +7,6 @@
 
 import UIKit
 
-public protocol Reusable {
-    static var uniqueIdentifier: String { get }
-}
-
-public extension Reusable {
-    static var uniqueIdentifier: String {
-        return String(describing: self)
-    }
-}
-
-extension UITableViewCell: Reusable {}
-
 public extension UITableView {
     func register<T: UITableViewCell>(_ cellClass: T.Type) {
         register(cellClass, forCellReuseIdentifier: cellClass.uniqueIdentifier)

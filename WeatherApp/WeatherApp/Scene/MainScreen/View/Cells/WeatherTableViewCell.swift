@@ -28,7 +28,7 @@ final class WeatherTableViewCell: UITableViewCell {
     
     private lazy var datesStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [startDateLabel, endDateLabel])
-        stackView.spacing = 8
+        stackView.spacing = Style.Space.sSpace
         stackView.axis = .vertical
         return stackView
     }()

@@ -34,4 +34,3 @@ struct WeatherCellViewModel {
     let endDate: String
     let senderName: String
 }
-

@@ -7,8 +7,16 @@
 
 import UIKit
 
+public enum NetworkError: Error {
+    case badData
+    case badResponse
+    case badRequest
+    case badDecode
+    case unknown(String)
+}
+
 public protocol WeatherNetworkServiceProtocol {
-    func fetchData<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> Void)
+    func fetchData<T: Decodable>(url: URL, completion: @escaping (Result<T, NetworkError>) -> Void)
     func fetchImage(url: URL, completion: @escaping (UIImage?) -> Void)
 }
 
@@ -16,27 +24,33 @@ final class WeatherNetworkService: WeatherNetworkServiceProtocol {
     private let decoder = JSONDecoder()
     private let imageCash = NSCache<NSString, UIImage>()
     
-    func fetchData<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> Void) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let data = data else {
-                if let error = error {
-                    completion(.failure(error))
-                }
-                return
+    init() {
+        decoder.dateDecodingStrategy = .iso8601
+    }
+    
+    func fetchData<T: Decodable>(url: URL, completion: @escaping (Result<T, NetworkError>) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil  else {
+                return completion(.failure(.badData))
             }
             
-            guard let decoder = self?.decoder else {
-                print("Error, decoder in nil.")
-                return
+            guard let response = response as? HTTPURLResponse else {
+                return completion(.failure(.badResponse))
             }
+            
+            switch response.statusCode {
+            case 200...299:
+                do {
+                    let decodedData = try self.decoder.decode(T.self, from: data)
 
-            do {
-                decoder.dateDecodingStrategy = .iso8601
-                let decodedData = try decoder.decode(T.self, from: data)
-
-                completion(.success(decodedData))
-            } catch {
-                completion(.failure(error))
+                    completion(.success(decodedData))
+                } catch {
+                    completion(.failure(.badDecode))
+                }
+            case 400:
+                completion(.failure(.badRequest))
+            default:
+                completion(.failure(.unknown("Something went wrong")))
             }
         }.resume()
     }
