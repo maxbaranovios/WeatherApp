@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol Reusable { // without public 
+public protocol Reusable {
     static var uniqueIdentifier: String { get }
 }
 
@@ -30,41 +30,4 @@ public extension UITableView {
         }
         return cell
     }
-//
-//    func dequeueReusableCell(with viewModel: AnyCellViewModel, for indexPath: IndexPath) -> UITableViewCell {
-//        let identifier = type(of: viewModel).uniqueIdentifier
-//        let cell = dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-//        cell.accessibilityIdentifier = viewModel.accessibilityIdentifier(for: indexPath)
-//        viewModel.setup(cell: cell)
-//        return cell
-//    }
 }
-//    func dequeueReusableCell(with viewModel: AnyCellViewModel, for indexPath: IndexPath) -> UITableViewCell {
-//        let identifier = type(of: viewModel).uniqueIdentifier
-//        let cell = dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-//        cell.accessibilityIdentifier = viewModel.accessibilityIdentifier(for: indexPath)
-//        viewModel.setup(cell: cell)
-//        return cell
-//    }
-//
-//    func register(_ modelType: AnyCellViewModel.Type) {
-//        register(modelType.cellClass, forCellReuseIdentifier: modelType.uniqueIdentifier)
-//    }
-//}
-//
-//public protocol AnyCellViewModel: Reusable {
-//    static var cellClass: AnyClass { get }
-//    func setup(cell: AnyViewCell)
-//    func size(constrainedBy maxWidth: CGFloat) -> CGSize?
-//    func height(constrainedBy maxWidth: CGFloat) -> CGFloat?
-//}
-//
-//public protocol Reusable {
-//    static var uniqueIdentifier: String { get }
-//}
-//
-//public extension Reusable {
-//    static var uniqueIdentifier: String {
-//        return String(describing: self)
-//    }
-//}
