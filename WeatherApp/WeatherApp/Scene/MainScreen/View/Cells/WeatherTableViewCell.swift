@@ -11,7 +11,7 @@ final class WeatherTableViewCell: UITableViewCell {
     
     // MARK: – Views
     
-    private let weatherImageView: UIImageView = {
+    private let weatherImageView: UIImageView = { // image string, date, date, string
         let imageView = UIImageView()
         imageView.backgroundColor = .systemPink
         return imageView
@@ -62,7 +62,7 @@ final class WeatherTableViewCell: UITableViewCell {
     // MARK: - Setup
     
     private func setupUI() {
-        backgroundColor = .orange
+        backgroundColor = .clear
         
         [
             weatherImageView,

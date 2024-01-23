@@ -9,10 +9,10 @@ import UIKit
 import SnapKit
 
 protocol WeatherViewControllerProtocol {
-    
+    func setupCells(with viewModel: [WeatherCellViewModel])
 }
 
-final class WeatherViewController: UIViewController {
+final public class WeatherViewController: UIViewController {
 
     // MARK: - Views
     
@@ -20,8 +20,6 @@ final class WeatherViewController: UIViewController {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
-//        tableView.estimatedRowHeight = 80
-//        tableView.rowHeight = UITableView.automaticDimension
         tableView.allowsMultipleSelection = false
         tableView.register(WeatherTableViewCell.self)
         return tableView
@@ -29,15 +27,13 @@ final class WeatherViewController: UIViewController {
 
     // MARK: - Properties
 
-//    var presenter = WeatherScreenPresenter()
-//    private var cells: [AnyCellViewModel] = [WeatherCellViewModel()]
+    var presenter: WeatherScreenPresenter? 
+    private var cells: [WeatherCellViewModel] = []
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        view.backgroundColor = .red
-        print("Hello")
-
+        presenter?.viewDidLoad()
     }
 }
 
@@ -45,13 +41,12 @@ final class WeatherViewController: UIViewController {
 
 private extension WeatherViewController {
     func setupUI() {
-
- 
+        view.backgroundColor = .white
+        
         setupLayout()
     }
     
     func setupLayout() {
-        tableView.backgroundColor = .green
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints {
@@ -69,18 +64,22 @@ extension WeatherViewController: UITableViewDelegate {
 // MARK: – UITableViewDataSource Implementation
 
 extension WeatherViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: WeatherTableViewCell.uniqueIdentifier) as! WeatherTableViewCell
         return cell
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1000
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //cells.count
+        return 1000
     }
 }
 
 // MARK: WeatherViewControllerProtocol Implementation
 
 extension WeatherViewController: WeatherViewControllerProtocol {
-    
+    func setupCells(with viewModel: [WeatherCellViewModel]) {
+        cells = viewModel
+        tableView.reloadData()
+    }
 }
