@@ -18,10 +18,13 @@ struct WeatherInput {
 public struct WeatherDIContainer {
     public let weatherService: WeatherNetworkServiceProtocol
     
-    public init(weatherService: WeatherNetworkServiceProtocol)
-    {
+    public init(weatherService: WeatherNetworkServiceProtocol) {
         self.weatherService = weatherService
     }
+}
+
+struct WeatherScreenViewModel {
+    let weatherCellViewModels: [WeatherCellViewModel]
 }
 
 struct WeatherCellViewModel {

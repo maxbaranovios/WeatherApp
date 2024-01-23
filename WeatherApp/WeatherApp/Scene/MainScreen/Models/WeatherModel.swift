@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct WeatherInfo: Codable {
+struct WeatherInfo: Decodable {
     let features: [Feature]
 }
 
-struct Feature: Codable {
+struct Feature: Decodable {
     let id: String
     let properties: Properties
 }
 
-struct Properties: Codable {
+struct Properties: Decodable {
     let effective: Date
     let ends: Date?
     let event: String

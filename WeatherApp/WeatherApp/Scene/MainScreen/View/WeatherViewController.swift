@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 protocol WeatherViewControllerProtocol {
-    func setupCells(with viewModel: [WeatherCellViewModel])
+    func setupCells(with viewModel: WeatherScreenViewModel)
 }
 
 final public class WeatherViewController: UIViewController {
@@ -19,7 +19,6 @@ final public class WeatherViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
-        tableView.delegate = self
         tableView.allowsMultipleSelection = false
         tableView.register(WeatherTableViewCell.self)
         return tableView
@@ -55,31 +54,25 @@ private extension WeatherViewController {
     }
 }
 
-// MARK: – UITableViewDelegate Implementation
-
-extension WeatherViewController: UITableViewDelegate {
-    
-}
-
 // MARK: – UITableViewDataSource Implementation
 
 extension WeatherViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: WeatherTableViewCell.uniqueIdentifier) as! WeatherTableViewCell
+        cell.setup(with: cells[indexPath.row])
         return cell
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //cells.count
-        return 1000
+        cells.count
     }
 }
 
 // MARK: WeatherViewControllerProtocol Implementation
 
 extension WeatherViewController: WeatherViewControllerProtocol {
-    func setupCells(with viewModel: [WeatherCellViewModel]) {
-        cells = viewModel
+    func setupCells(with viewModel: WeatherScreenViewModel) {
+        cells = viewModel.weatherCellViewModels
         tableView.reloadData()
     }
 }

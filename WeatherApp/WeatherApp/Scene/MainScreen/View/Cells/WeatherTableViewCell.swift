@@ -7,32 +7,23 @@
 
 import UIKit
 
+protocol WeatherTableViewCellProtocol {
+    func setup(with viewModel: WeatherCellViewModel)
+}
+
 final class WeatherTableViewCell: UITableViewCell {
     
     // MARK: – Views
     
-    private let weatherImageView: UIImageView = { // image string, date, date, string
+    private let eventNameLabel = UILabel()
+    private let startDateLabel = UILabel()
+    private let endDateLabel = UILabel()
+    private let senderName = UILabel()
+    
+    private let weatherImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .systemPink
         return imageView
-    }()
-    
-    private let eventNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Event VO, cool!"
-        return label
-    }()
-    
-    private let startDateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "start: 20.10.1999"
-        return label
-    }()
-    
-    private let endDateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "end:  30.01.2000"
-        return label
     }()
     
     private lazy var datesStackView: UIStackView = {
@@ -40,12 +31,6 @@ final class WeatherTableViewCell: UITableViewCell {
         stackView.spacing = 8
         stackView.axis = .vertical
         return stackView
-    }()
-    
-    private let senderName: UILabel = {
-        let label = UILabel()
-        label.text = "sender: Maxim"
-        return label
     }()
     
     // MARK: - Initialization
@@ -76,37 +61,45 @@ final class WeatherTableViewCell: UITableViewCell {
     
     private func setupConstraints() {
         weatherImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(10)
-            $0.verticalEdges.equalToSuperview().inset(8)
-            $0.size.equalTo(64)
+            $0.leading.equalToSuperview().inset(Style.Offsets.mOffset)
+            $0.verticalEdges.equalToSuperview().inset(Style.Offsets.sOffset)
+            $0.size.equalTo(Style.Size.xxSize)
         }
         
         eventNameLabel.snp.makeConstraints {
-            $0.leading.equalTo(weatherImageView.snp.trailing).offset(8)
-            $0.top.equalToSuperview().inset(10)
-            $0.height.equalTo(16)
+            $0.leading.equalTo(weatherImageView.snp.trailing).offset(Style.Offsets.sOffset)
+            $0.top.equalToSuperview().inset(Style.Offsets.mOffset)
+            $0.height.equalTo(Style.Size.mSize)
         }
         
         startDateLabel.snp.makeConstraints {
-            $0.height.equalTo(12)
+            $0.height.equalTo(Style.Size.sSize)
         }
         
         endDateLabel.snp.makeConstraints {
-            $0.height.equalTo(12)
+            $0.height.equalTo(Style.Size.sSize)
         }
         
         datesStackView.snp.makeConstraints {
-            $0.leading.equalTo(weatherImageView.snp.trailing).offset(8)
-            $0.bottom.equalToSuperview().inset(10)
+            $0.leading.equalTo(weatherImageView.snp.trailing).offset(Style.Offsets.sOffset)
+            $0.bottom.equalToSuperview().inset(Style.Offsets.mOffset)
         }
         
         senderName.snp.makeConstraints {
-            $0.height.equalTo(12)
-            $0.trailing.bottom.equalToSuperview().inset(10)
+            $0.height.equalTo(Style.Size.sSize)
+            $0.trailing.bottom.equalToSuperview().inset(Style.Offsets.mOffset)
         }
     }
-        
-    public func setup() {
+}
 
+// MARK: – WeatherTableViewCellProtocol Implementation
+
+extension WeatherTableViewCell: WeatherTableViewCellProtocol {
+    func setup(with viewModel: WeatherCellViewModel) {
+        eventNameLabel.text = viewModel.eventName
+        weatherImageView.image = viewModel.image
+        startDateLabel.text = viewModel.startDate
+        senderName.text = viewModel.senderName
+        endDateLabel.text = viewModel.endDate
     }
 }
